@@ -11,14 +11,17 @@ function serverStart (route, handle) {
         //将请求的url解析为url对象
         var urlObj = url.parse(req.url)
         //在serverStart函数内调用route函数并且传入实参
-        route(handle, urlObj.pathname)
+        console.log('urlObj.pathname', urlObj.pathname)
+        var content = route(handle, urlObj.pathname)
         if (urlObj.pathname == '/') {
             fs.access(fsHtmlPath, fs.constants.F_OK, function () {
                 console.log('no access!')
             })
-            res.writeHead(200, {"Content-Type": 'text/html'})
-            fs.createReadStream('./fs.html').pipe(res)
         }
+        // fs.createReadStream('./fs.html').pipe(res)
+        res.writeHead(200, {"Content-Type": 'text/html;charset=utf-8'})
+        res.write(content)
+        res.end()
     })
     server.listen(5678)
     console.log('Server is running at http://127.0.0.1:5678')
