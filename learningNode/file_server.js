@@ -6,12 +6,12 @@ var url = require('url')
 var fsHtmlPath = path.join(path.resolve(), 'fs.html')
 console.log('=====', fsHtmlPath)
 
-function serverStart (route) {
+function serverStart (route, handle) {
     var server = http.createServer(function (req, res) {
         //将请求的url解析为url对象
         var urlObj = url.parse(req.url)
-        //在serverStart函数内调用route函数并且传入参数
-        route(urlObj.pathname)
+        //在serverStart函数内调用route函数并且传入实参
+        route(handle, urlObj.pathname)
         if (urlObj.pathname == '/') {
             fs.access(fsHtmlPath, fs.constants.F_OK, function () {
                 console.log('no access!')
